@@ -136,7 +136,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex w-full h-full bg-accent rounded-md overflow-hidden flex-col md:flex-row">
+    <div className="flex w-full h-full bg-accent rounded-md overflow-hidden flex-col md:flex-row font-sans">
       <div className="bg-primary p-8 flex flex-col items-center space-y-2">
         {user.imageUrl && (
           <Image
@@ -148,14 +148,14 @@ const Profile = () => {
           />
         )}
 
-        <h1 className="text-2xl text-center font-semibold leading-tight">
+        <h1 className="text-2xl text-center font-semibold leading-tight text-white">
           {user.firstName} {user.lastName}
         </h1>
         <p className="text-muted/60 text-sm">
           {user.primaryEmailAddress?.emailAddress}
         </p>
       </div>
-      <div className="p-6 flex flex-col flex-1 space-y-4">
+      <div className="p-6 flex flex-col flex-2 space-y-4">
         <h2 className="text-xl text-primary font-semibold">
           Subscription Details
         </h2>
@@ -174,8 +174,7 @@ const Profile = () => {
                   <strong>Current Plan:</strong> {currentPlan.name}
                 </p>
                 <p>
-                  <strong>Amount:</strong>
-                  {currentPlan.amount}
+                  <strong>Amount:</strong> {currentPlan.amount}
                   {currentPlan.currency}
                 </p>
                 <p>
@@ -195,7 +194,7 @@ const Profile = () => {
           <h3 className="text-sm text-muted-foreground">
             Change Subscription Plan
           </h3>
-          {currentPlan && (
+          {currentPlan ? (
             <Select
               onValueChange={(value: string) => setSelectedPlan(value)}
               defaultValue={currentPlan?.interval}
@@ -223,13 +222,19 @@ const Profile = () => {
                 </div>
               )}
             </Select>
+          ) : (
+            <p>No active subscription</p>
           )}
         </div>
         <div className="space-y-2 border border-primary/40 p-2 rounded-md">
           <AlertDialog>
             <AlertDialogTitle>Unsubscribe</AlertDialogTitle>
             <AlertDialogTrigger asChild>
-              <Button className="w-full" variant="outline">
+              <Button
+                className="w-full"
+                variant="outline"
+                disabled={!currentPlan}
+              >
                 Unsubscribe
               </Button>
             </AlertDialogTrigger>

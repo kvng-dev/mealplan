@@ -4,10 +4,10 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="px-4 py8 sm:py-12 lg:py-16 max-w-7xl mx-auto text-white">
-      <section className="bg-gradient-to-r from-primary/80 to-primary/50 rounded-lg mb-12 p-8 text-center">
+    <div className="px-4 py8 sm:py-12 lg:py-16 max-w-7xl mx-auto text-white font-sans">
+      <section className="bg-gradient-to-r from-primary/80 to-primary/50 rounded-lg mb-12 p-8 text-center ">
         <h1 className="text-4xl font-bold mb-4">Personalized AI Meal Plans</h1>
-        <p className="">
+        <p className="font-sans">
           Let our AI do the planning. You focus on cooking and enjoying!
         </p>
         <Button asChild className="mt-12 text-white">

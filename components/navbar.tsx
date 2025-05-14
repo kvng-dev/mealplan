@@ -7,7 +7,7 @@ import {
   useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
-import { Home, Loader2, Pizza, Salad } from "lucide-react";
+import { Loader2, Package2, Pizza, Salad, UserCog } from "lucide-react";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
 
@@ -16,7 +16,7 @@ const Navbar = () => {
 
   if (!isLoaded) return <Loader2 size={12} className="animate-spin" />;
   return (
-    <div className="border-primary-foreground/50 w-full border-b p-4 sticky top-0 left-0 z-50 backdrop-blur-xl">
+    <div className="border-primary-foreground/50 w-full border-b p-4 sticky top-0 left-0 z-50 backdrop-blur-xl font-sans">
       <div className=" items-center  flex justify-between  max-w-7xl mx-auto">
         <Link
           href="/"
@@ -26,18 +26,30 @@ const Navbar = () => {
         </Link>
 
         <div className="flex gap-4">
-          <Button asChild variant="secondary" className="bg-primary font-mono">
-            <Link href={"/meal-plan"}>
-              <Home />
-              Home
-            </Link>
-          </Button>
-          <Button asChild variant="secondary" className="bg-primary font-mono">
-            <Link href={"/meal-plan"}>
-              <Pizza />
-              Meal Plan
-            </Link>
-          </Button>
+          {user && (
+            <>
+              <Button asChild variant="link" className="">
+                <Link href={"/meal-plan"}>
+                  <Pizza />
+                  <span className="hidden md:block">Meal Plan</span>
+                </Link>
+              </Button>
+
+              <Button asChild variant="link" className="">
+                <Link href={"/profile"}>
+                  <UserCog />
+                  <span className="hidden md:block">Profile</span>
+                </Link>
+              </Button>
+
+              <Button asChild variant="link" className="">
+                <Link href={"/subscribe"}>
+                  <Package2 />
+                  <span className="hidden md:block">Subscribe</span>
+                </Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <div className="flex gap-4">

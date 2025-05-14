@@ -66,7 +66,7 @@ const SubcribePage = () => {
     mutate({ planType });
   };
   return (
-    <div className="max-w-6xl mx-auto flex items-center flex-col">
+    <div className="max-w-6xl mx-auto flex items-center flex-col font-sans">
       <div className="space-y-4 mb-12 flex flex-col items-center">
         <h2 className="text-3xl font-bold t">Pricing</h2>
         <p className="text-muted-foreground">

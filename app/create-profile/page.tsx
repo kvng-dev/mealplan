@@ -40,7 +40,7 @@ const CreateProfile = () => {
     }
   }, [isLoaded, isSignedIn]);
   return (
-    <div className="flex items-center mt-30 border border-primary">
+    <div className="flex items-center mt-30 border border-primary/40 p-32 rounded-md">
       Creating user profile <Loader2 className="animate-spin" />
     </div>
   );

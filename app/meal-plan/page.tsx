@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useMutation } from "@tanstack/react-query";
+import { availablePlans } from "@/lib/plan";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import React from "react";
 interface MealPlanInput {
@@ -30,6 +31,11 @@ interface MealPlanResponse {
   error?: string;
 }
 
+async function fetchSubStatus() {
+  const response = await fetch("/api/profile/subscription-status");
+  return response.json();
+}
+
 async function generateMealPlan(payload: MealPlanInput) {
   const response = await fetch("/api/generate-plan", {
     method: "POST",
@@ -46,6 +52,22 @@ const MealPlan = () => {
   >({
     mutationFn: generateMealPlan,
   });
+
+  const {
+    data: subscription,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["subscription"],
+    queryFn: fetchSubStatus,
+  });
+
+  const currentPlan = availablePlans.find(
+    (plan) => plan.interval === subscription?.subscription.subTier
+  );
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -78,7 +100,7 @@ const MealPlan = () => {
 
   return (
     <div>
-      <div className="grid md:grid-cols-4 grid-cols-1 bg-muted-foreground/40 h-full rounded-lg overflow-hidden">
+      <div className="grid md:grid-cols-4 grid-cols-1 bg-muted-foreground/40 h-full rounded-lg overflow-hidden font-sans">
         <div className="bg-primary/70 px-4 py-4 space-y-4">
           <h1 className="text-xl font-semibold text-center max-w-[200px] mx-auto ">
             AI Meal Plan Generator
@@ -88,7 +110,7 @@ const MealPlan = () => {
             <div className="space-y-2">
               <Label htmlFor="dietType">Diet Type</Label>
               <Input
-                className="bg-white"
+                className="border-white placeholder:text-white/50"
                 type="text"
                 name="dietType"
                 id="dietType"
@@ -99,7 +121,7 @@ const MealPlan = () => {
             <div className="space-y-2">
               <Label htmlFor="calories">Daily Calorie Goal</Label>
               <Input
-                className="bg-white"
+                className="border-white placeholder:text-white/50"
                 type="number"
                 name="calories"
                 id="calories"
@@ -112,7 +134,7 @@ const MealPlan = () => {
             <div className="space-y-2">
               <Label htmlFor="allergies">Allergies</Label>
               <Input
-                className="bg-white"
+                className="border-white placeholder:text-white/50"
                 type="text"
                 name="allergies"
                 id="allergies"
@@ -123,7 +145,7 @@ const MealPlan = () => {
             <div className="space-y-2">
               <Label htmlFor="cuisine">Preferred Cuisine</Label>
               <Input
-                className="bg-muted"
+                className="border-white placeholder:text-white/50"
                 type="text"
                 name="cuisine"
                 id="cuisine"
@@ -145,7 +167,7 @@ const MealPlan = () => {
               <Button
                 className="w-full text-white"
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || !currentPlan}
               >
                 {isPending ? "Generating..." : "Generate Meal Plan"}
               </Button>
@@ -173,9 +195,7 @@ const MealPlan = () => {
                       </h3>
                       {mealPlan ? (
                         <div className="space-y-2 text-muted">
-                          <div>
-                            <strong>Breakfast:</strong> {mealPlan.Breakfast}
-                          </div>
+                          <div></div>
                           <div>
                             <strong>Lunch:</strong> {mealPlan.Lunch}
                           </div>
